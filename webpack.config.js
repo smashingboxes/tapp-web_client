@@ -16,7 +16,7 @@ module.exports = {
   devServer: {
     inline: true
   },
-  entry: './src/index.js',
+  entry: './app/index.js',
   module: {
     loaders: [
       {
@@ -54,4 +54,5 @@ module.exports = {
   },
   // plugins: plugins
 };
+
 

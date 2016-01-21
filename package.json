@@ -5,7 +5,7 @@
   "main": "app/main.jsx",
   "scripts": {
     "build": "webpack -d",
-    "start": "webpack-dev-server -d",
+    "start": "webpack-dev-server --port 8081 -d",
     "test": "eslint ./app && mocha --opts mocha.opts 'app/**/*-test.jsx'"
   },
   "repository": {
@@ -41,6 +41,7 @@
     "eslint-plugin-react": "^3.7.1",
     "extract-text-webpack-plugin": "^0.9.1",
     "faker": "^3.0.1",
+    "file-loader": "^0.8.4",
     "jsdom": "^6.3.0",
     "lost": "~6.6.2",
     "mocha": "^2.3.2",
