@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack -d",
     "start": "webpack-dev-server --port 8081 -d",
-    "test": "eslint ./app && mocha --opts mocha.opts 'app/**/*-test.jsx'"
+    "test": "eslint ./app && mocha --opts mocha.opts 'app/**/*-test.js'"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
     "immutable": "~3.7.5",
     "keymirror": "~0.1.1",
     "react": "^0.14.2",
-    "react-dom": "^0.14.2",
     "react-router": "~1.0.0-rc3",
     "url": "~0.11.0"
   },
@@ -37,8 +36,8 @@
     "chai": "^3.2.0",
     "chai-immutable": "^1.3.0",
     "css-loader": "^0.21.0",
-    "eslint": "^1.8.0",
-    "eslint-plugin-react": "^3.7.1",
+    "eslint": "^1.3.1",
+    "eslint-plugin-react": "^3.3.0",
     "extract-text-webpack-plugin": "^0.9.1",
     "faker": "^3.0.1",
     "file-loader": "^0.8.4",

@@ -1,11 +1,18 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+// import Router, { IndexRedirect, IndexRoute, Route } from 'react-router';
+import Router, { Route } from 'react-router';
 import './index.html';
+import { getHistory } from './services/HistoryService';
+import InterceptorService from './services/InterceptorService';
+import TappRoot from './components/TappRoot';
 
-class HelloVeery extends Component {
-  render() {
-    return <div>Hell adfsdo Veery</div>;
-  }
-}
+InterceptorService.init();
 
-ReactDOM.render(<HelloVeery />, document.querySelector('#react-mount'));
+const routes = (
+  <Router history={getHistory()}>
+    // <Route path="/" component={TappRoot}>
+    // </Route>
+  </Router>
+);
+
+React.render(routes, document.getElementById('react-mount'));
