@@ -10,8 +10,8 @@ InterceptorService.init();
 
 const routes = (
   <Router history={getHistory()}>
-    // <Route path="/" component={TappRoot}>
-    // </Route>
+    <Route path="/" component={TappRoot}>
+    </Route>
   </Router>
 );
 

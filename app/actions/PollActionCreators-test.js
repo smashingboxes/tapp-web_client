@@ -2,7 +2,9 @@ import { expect } from 'chai';
 import faker from 'faker';
 import { stub } from 'sinon';
 import axios from 'axios';
-import { PollActionCreators } from './PollActionCreators';
+import AppDispatcher from '../services/AppDispatcher';
+import constants from '../constants';
+import PollActionCreators from './PollActionCreators';
 
 describe('PollActionCreators', () => {
   describe('getCurrentPoll', () => {
@@ -30,15 +32,17 @@ describe('PollActionCreators', () => {
       }
     };
     let get;
-    // let promise;
+    let dispatch;
+    let promise;
 
     before(() => {
-      get = stub(axios, 'get', () => Promise.resolve({ data: { poll } }));
+      dispatch = stub(AppDispatcher, 'dispatch');
+      get = stub(axios, 'get', () => Promise.resolve({ data: poll.data }));
     });
 
     beforeEach(() => {
-      // promise = PollActionCreators.getCurrentPoll();
-      PollActionCreators.getCurrentPoll();
+      promise = PollActionCreators.getCurrentPoll();
+      // PollActionCreators.getCurrentPoll();
     });
 
     it('requests a the current poll', () => {
@@ -47,7 +51,22 @@ describe('PollActionCreators', () => {
     });
 
     it('dispatches the poll', () => {
+      return promise.then(() => {
+        const { actionType, payload } = dispatch.firstCall.args[0];
 
+        expect(actionType).to.equal(constants.CURRENT_POLL);
+        expect(payload).to.deep.equal(poll);
+      });
+    });
+
+    afterEach(() => {
+      get.reset();
+      dispatch.reset();
+    });
+
+    after(() => {
+      get.restore();
+      dispatch.restore();
     });
   });
 });
