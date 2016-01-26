@@ -1,22 +1,22 @@
 // var autoprefixer = require('autoprefixer');
-// var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // var lost = require('lost');
 var webpack = require('webpack');
 
-// var environment = process.env.NODE_ENV || 'development';
-// var plugins = [
-//   new webpack.DefinePlugin({
-//     'process.env': { 'NODE_ENV': JSON.stringify(environment) }
-//   }),
-//   new ExtractTextPlugin('styles.css'),
-//   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-// ];
+var environment = process.env.NODE_ENV || 'development';
+var plugins = [
+  new webpack.DefinePlugin({
+    'process.env': { 'NODE_ENV': JSON.stringify(environment) }
+  }),
+  new ExtractTextPlugin('styles.css'),
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+];
 
 module.exports = {
   devServer: {
     inline: true
   },
-  entry: './src/index.js',
+  entry: './app/index.js',
   module: {
     loaders: [
       {
@@ -52,6 +52,7 @@ module.exports = {
     filename: 'bundle.js',
     path: './dist'
   },
-  // plugins: plugins
+  plugins: plugins
 };
+
 
