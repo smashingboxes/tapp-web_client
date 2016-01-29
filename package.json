@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack -d",
     "start": "webpack-dev-server --port 8081 -d",
-    "test": "eslint ./app && mocha --opts mocha.opts 'app/**/*-test.js'"
+    "test": "mocha --opts mocha.opts 'app/**/*-test.js'"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/smashingboxes/tapp-web_client/wiki",
   "dependencies": {
     "axios": "~0.5.4",
+    "base-64": "^0.1.0",
     "flux": "~2.1.1",
     "history": "~1.17.0",
     "immutable": "~3.7.5",

@@ -42,8 +42,20 @@ describe('PollStore', () => {
       expect(poll).to.equal(Immutable.fromJS(expectedPoll));
     });
 
-    afterEach(() => {
+    // afterEach(() => {
+    //
+    // });
+  });
 
+  describe('resetPatientStore', () => {
+    beforeEach(() => {
+      PollStore.setCurrentPoll({ poll: expectedPoll });
+      PollStore.resetPollStore();
+    });
+
+    it('resets the list of patients', () => {
+      const poll = PollStore.getCurrentPoll();
+      expect(poll).to.equal(new Immutable.Map());
     });
   });
 });

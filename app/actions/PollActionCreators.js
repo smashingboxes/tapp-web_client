@@ -13,6 +13,8 @@ function getCurrentPoll() {
     });
 }
 
+// console.log(getCurrentPoll());
+
 export default {
   getCurrentPoll
 };

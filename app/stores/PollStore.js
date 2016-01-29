@@ -25,6 +25,10 @@ class PollStore extends Store {
   setCurrentPoll({ poll }) {
     pollStore = pollStore.set('poll', Immutable.fromJS(poll));
   }
+
+  resetPollStore() {
+    pollStore = getInitialPollStore();
+  }
 }
 
 export default new PollStore(AppDispatcher);
