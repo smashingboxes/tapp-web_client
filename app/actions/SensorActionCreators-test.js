@@ -9,14 +9,21 @@ describe('SensorActionCreators', () => {
   const expectedOrganizationCollection = {
     organizations: [
       {
-        id: faker.random.number()
+        id: faker.random.number(),
+        sensors_collection: {
+          sensors: [
+            {
+              sensor_id: faker.random.number()
+            }
+          ]
+        }
       }
     ]
   };
 
   describe('getSensorOrganization', () => {
     let get;
-    let promise;
+    let getSensorOrganization;
     // let dispatch;
 
     before(() => {
@@ -25,7 +32,7 @@ describe('SensorActionCreators', () => {
     });
 
     beforeEach(() => {
-      promise = SensorActionCreators.getSensorOrganization();
+      getSensorOrganization = SensorActionCreators.getSensorOrganization();
     });
 
     it('requests the sensor organization from Bright Wolf', () => {
@@ -34,8 +41,8 @@ describe('SensorActionCreators', () => {
     });
 
     it('returns the sensor organization', () => {
-      return promise.then((data) => {
-        expect(data).to.deep.equal(expectedOrganizationCollection.organizations[0]);
+      return getSensorOrganization.then((data) => {
+        expect(data.sensorOrganization).to.deep.equal(expectedOrganizationCollection.organizations[0]);
       });
     });
 
@@ -51,26 +58,42 @@ describe('SensorActionCreators', () => {
   });
 
   describe('getSensor', () => {
-    const expectedSensorCollection = {
-      sensors: [
-        {
-          sensor_id: faker.random.number()
-        }
-      ]
-    };
     let get;
+    let get2;
     let getSensorOrganization;
+    let foo;
+    let sensor;
+    let getSensor;
     // let promise;
 
     before(() => {
-      get = stub(axios, 'get', () => Promise.resolve({ sensors_collection: expectedSensorCollection }));
+      foo = {
+        id: faker.random.number(),
+        sensors_collection: {
+          sensors: [
+            {
+              sensor_id: faker.random.number()
+            }
+          ]
+        }
+      }
+      sensor = foo.sensors_collection.sensors[0];
+      // foo = {
+      //     sensors: [
+      //       {
+      //         sensor_id: faker.random.number()
+      //       }
+      //     ]
+      // }
+      get = stub(axios, 'get', () => Promise.resolve({ sensorOrganization: foo }));
+              // .onSecondCall().returns(Promise.resolve({ sensor: sensor }));
       // console.log(expectedOrganizationCollection);
-      getSensorOrganization = stub(SensorActionCreators, 'getSensorOrganization', () => Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
+      // getSensorOrganization = stub(SensorActionCreators, 'getSensorOrganization', () => Promise.resolve({ sensorOrganization: foo }));
       // getSensorOrganization = stub(SensorActionCreators, 'getSensorOrganization', () => { id: expectedOrganizationCollection.organizations[0].id });
     });
 
     beforeEach(() => {
-      SensorActionCreators.getSensor();
+      getSensor = SensorActionCreators.getSensor();
     });
 
     it('first calls getSensorOrganization', () => {
@@ -79,12 +102,13 @@ describe('SensorActionCreators', () => {
     });
 
     it('requests the sensor from Bright Wolf', () => {
-      const endPoint = get.secondCall.args[0];
+      getSensor.then(() => {
+        const endPoint = get.secondCall.args[0];
+        expect(endPoint).to.equal(`/api/sensors?org_id=${foo.id}`);
+      });
       // console.log(getSensorOrganization);
       // console.log(getSensorOrganization.first_call.args);
-      console.log(getSensorOrganization);
-      const organizationId = getSensorOrganization.id;
-      expect(endPoint).to.equal(`/api/sensors?org_id=${organizationId}`);
+      // console.log(getSensorOrganization);
     });
     //
     // it('returns the sensor organization', () => {

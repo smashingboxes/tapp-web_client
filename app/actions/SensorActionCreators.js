@@ -10,7 +10,7 @@ function getSensorOrganization() {
       // console.log(data.organizations_collection.organizations[0].id);
       // console.log("+++++++++");
       // console.log(data.organizations_collection.organizations[0].id);
-      return data.organizations_collection.organizations[0];
+      return { sensorOrganization: data.organizations_collection.organizations[0] };
     })
     .catch((response) => {
       console.log(response);
@@ -25,13 +25,20 @@ function getSensorOrganization() {
 // }
 
 function getSensor() {
+  // let organizationId;
+  let promise;
   // console.log('+++++++++');
   // console.log(viewSensorOrganization());
   // console.log('+++++++++');
-  const organizationId = getSensorOrganization().id;
-  return sensorHttpClient(`/api/sensors?org_id=${organizationId}`)
-    .then((data) => {
-      return data;
+  // const organizationId = getSensorOrganization().id;
+  // promise = Promise.resolve(getSensorOrganization());
+  return getSensorOrganization()
+    .then((sensorOrg) => {
+      return sensorHttpClient(`/api/sensors?org_id=${sensorOrg.sensor_id}`)
+        .then((data) => {
+          console.log("#############");
+          return { sensor: data };
+        });
     });
 }
 
