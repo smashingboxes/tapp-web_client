@@ -41,10 +41,6 @@ describe('PollStore', () => {
       const poll = PollStore.getCurrentPoll();
       expect(poll).to.equal(Immutable.fromJS(expectedPoll));
     });
-
-    // afterEach(() => {
-    //
-    // });
   });
 
   describe('resetPatientStore', () => {

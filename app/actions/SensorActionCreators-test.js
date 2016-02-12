@@ -2,8 +2,10 @@ import { expect } from 'chai';
 import faker from 'faker';
 import { stub } from 'sinon';
 import axios from 'axios';
+import moment from 'moment';
 import SensorActionCreators from './SensorActionCreators';
-// import AppDispatcher from '../services/AppDispatcher';
+import constants from '../constants';
+import AppDispatcher from '../services/AppDispatcher';
 
 describe('SensorActionCreators', () => {
   const expectedOrganizationCollection = {
@@ -20,14 +22,19 @@ describe('SensorActionCreators', () => {
       }
     ]
   };
+  let sensorOrganization;
+  let sensor;
+  let get;
+
+  before(() => {
+    sensorOrganization = expectedOrganizationCollection.organizations[0];
+    sensor = sensorOrganization.sensors_collection.sensors[0];
+  });
 
   describe('getSensorOrganization', () => {
-    let get;
     let getSensorOrganization;
-    // let dispatch;
 
     before(() => {
-      // dispatch = stub(AppDispatcher, 'dispatch');
       get = stub(axios, 'get', () => Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
     });
 
@@ -48,48 +55,20 @@ describe('SensorActionCreators', () => {
 
     afterEach(() => {
       get.reset();
-      // dispatch.reset();
     });
 
     after(() => {
       get.restore();
-      // dispatch.restore();
     });
   });
 
   describe('getSensor', () => {
-    let get;
-    let get2;
-    let getSensorOrganization;
-    let foo;
-    let sensor;
     let getSensor;
-    // let promise;
 
     before(() => {
-      foo = {
-        id: faker.random.number(),
-        sensors_collection: {
-          sensors: [
-            {
-              sensor_id: faker.random.number()
-            }
-          ]
-        }
-      }
-      sensor = foo.sensors_collection.sensors[0];
-      // foo = {
-      //     sensors: [
-      //       {
-      //         sensor_id: faker.random.number()
-      //       }
-      //     ]
-      // }
-      get = stub(axios, 'get', () => Promise.resolve({ sensorOrganization: foo }));
-              // .onSecondCall().returns(Promise.resolve({ sensor: sensor }));
-      // console.log(expectedOrganizationCollection);
-      // getSensorOrganization = stub(SensorActionCreators, 'getSensorOrganization', () => Promise.resolve({ sensorOrganization: foo }));
-      // getSensorOrganization = stub(SensorActionCreators, 'getSensorOrganization', () => { id: expectedOrganizationCollection.organizations[0].id });
+      get = stub(axios, 'get');
+      get.withArgs('/api/organizations').returns(Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
+      get.withArgs(`/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ sensors_collection: sensorOrganization.sensors_collection }));
     });
 
     beforeEach(() => {
@@ -102,20 +81,17 @@ describe('SensorActionCreators', () => {
     });
 
     it('requests the sensor from Bright Wolf', () => {
-      getSensor.then(() => {
+      return getSensor.then(() => {
         const endPoint = get.secondCall.args[0];
-        expect(endPoint).to.equal(`/api/sensors?org_id=${foo.id}`);
+        expect(endPoint).to.equal(`/api/sensors?org_id=${sensorOrganization.id}`);
       });
-      // console.log(getSensorOrganization);
-      // console.log(getSensorOrganization.first_call.args);
-      // console.log(getSensorOrganization);
     });
-    //
-    // it('returns the sensor organization', () => {
-    //   return promise.then((data) => {
-    //     expect(data).to.deep.equal(expectedOrganizationCollection.organizations[0]);
-    //   });
-    // });
+
+    it('returns the sensor organization', () => {
+      return getSensor.then((data) => {
+        expect(data).to.deep.equal(sensor);
+      });
+    });
 
     afterEach(() => {
       get.reset();
@@ -123,6 +99,77 @@ describe('SensorActionCreators', () => {
 
     after(() => {
       get.restore();
+    });
+  });
+
+  describe('getSensorHistory', () => {
+    let getSensorHistory;
+    let expectedHistory;
+    let dispatch;
+    let expectedUrl;
+
+    before(() => {
+      expectedHistory = {
+        queryresult: {
+          matches: [
+            {
+              analog_channel_1: faker.random.number(),
+              report_time: faker.date.past()
+            }
+          ]
+        }
+      };
+      dispatch = stub(AppDispatcher, 'dispatch');
+      get = stub(axios, 'get');
+      expectedUrl = `/api/sensors/history?sensor_id=${sensor.sensor_id}&from=${moment().subtract('1', 'days').toISOString()}`;
+
+      get.withArgs('/api/organizations').returns(Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
+      get.withArgs(`/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ sensors_collection: sensorOrganization.sensors_collection }));
+      get.onCall(2).returns(Promise.resolve(expectedHistory));
+      // get.withArgs(expectedUrl).returns(Promise.resolve({ expectedHistory }));
+    });
+
+    beforeEach(() => {
+      getSensorHistory = SensorActionCreators.getSensorHistory();
+    });
+
+    it('calls both getSensorOrganization and getSensor', () => {
+      return getSensorHistory.then(() => {
+        const firstEndPoint = get.firstCall.args[0];
+        const secondEndPoint = get.secondCall.args[0];
+
+        expect(firstEndPoint).to.equal(`/api/organizations`);
+        expect(secondEndPoint).to.equal(`/api/sensors?org_id=${sensorOrganization.id}`);
+      });
+    });
+
+    it('requests the sensor history from Bright Wolf', () => {
+      return getSensorHistory.then(() => {
+        const endpoint = get.thirdCall.args[0];
+
+        expect(endpoint).to.contain(`/api/sensors/history?sensor_id=${sensor.sensor_id}&from=`);
+      });
+    });
+
+    it('dispatches the sensor history', () => {
+      return getSensorHistory.then(() => {
+        const { actionType, payload } = dispatch.firstCall.args[0];
+
+        expect(actionType).to.equal(constants.SENSOR_HISTORY_VIEW);
+        expect(payload).to.deep.equal({ sensorHistory: expectedHistory.queryresult.matches[0] });
+      });
+    });
+
+    afterEach(() => {
+      // foo.reset();
+      // bar.reset();
+      get.reset();
+      dispatch.reset();
+    });
+
+    after(() => {
+      get.restore();
+      dispatch.restore();
     });
   });
 });
