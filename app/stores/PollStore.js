@@ -14,7 +14,7 @@ let pollStore = getInitialPollStore();
 class PollStore extends Store {
   get actions() {
     return {
-      [constants.CURRENT_POLL]: this.setCurrentPoll
+      [constants.CURRENT_POLL_VIEW]: this.setCurrentPoll
     };
   }
 

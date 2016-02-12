@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import faker from 'faker';
 import Immutable from 'immutable';
-// import { stub } from 'sinon';
-// import constants from '../constants';
 import PollStore from './PollStore';
 
 describe('PollStore', () => {
@@ -43,13 +41,13 @@ describe('PollStore', () => {
     });
   });
 
-  describe('resetPatientStore', () => {
+  describe('resetPollStore', () => {
     beforeEach(() => {
       PollStore.setCurrentPoll({ poll: expectedPoll });
       PollStore.resetPollStore();
     });
 
-    it('resets the list of patients', () => {
+    it('resets the poll store', () => {
       const poll = PollStore.getCurrentPoll();
       expect(poll).to.equal(new Immutable.Map());
     });

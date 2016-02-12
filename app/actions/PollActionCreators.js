@@ -7,13 +7,11 @@ function getCurrentPoll() {
     .get('api/poll')
     .then(({ data }) => {
       AppDispatcher.dispatch({
-        actionType: constants.CURRENT_POLL,
+        actionType: constants.CURRENT_POLL_VIEW,
         payload: { data }
       });
     });
 }
-
-// console.log(getCurrentPoll());
 
 export default {
   getCurrentPoll

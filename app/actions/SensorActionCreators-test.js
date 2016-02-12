@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import faker from 'faker';
 import { stub } from 'sinon';
 import axios from 'axios';
-import moment from 'moment';
 import SensorActionCreators from './SensorActionCreators';
 import constants from '../constants';
 import AppDispatcher from '../services/AppDispatcher';
@@ -49,7 +48,7 @@ describe('SensorActionCreators', () => {
 
     it('returns the sensor organization', () => {
       return getSensorOrganization.then((data) => {
-        expect(data.sensorOrganization).to.deep.equal(expectedOrganizationCollection.organizations[0]);
+        expect(data.sensor_organization).to.deep.equal(expectedOrganizationCollection.organizations[0]);
       });
     });
 
@@ -89,7 +88,7 @@ describe('SensorActionCreators', () => {
 
     it('returns the sensor organization', () => {
       return getSensor.then((data) => {
-        expect(data).to.deep.equal(sensor);
+        expect(data.sensor).to.deep.equal(sensor);
       });
     });
 
@@ -106,7 +105,6 @@ describe('SensorActionCreators', () => {
     let getSensorHistory;
     let expectedHistory;
     let dispatch;
-    let expectedUrl;
 
     before(() => {
       expectedHistory = {
@@ -121,12 +119,10 @@ describe('SensorActionCreators', () => {
       };
       dispatch = stub(AppDispatcher, 'dispatch');
       get = stub(axios, 'get');
-      expectedUrl = `/api/sensors/history?sensor_id=${sensor.sensor_id}&from=${moment().subtract('1', 'days').toISOString()}`;
 
       get.withArgs('/api/organizations').returns(Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
       get.withArgs(`/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ sensors_collection: sensorOrganization.sensors_collection }));
       get.onCall(2).returns(Promise.resolve(expectedHistory));
-      // get.withArgs(expectedUrl).returns(Promise.resolve({ expectedHistory }));
     });
 
     beforeEach(() => {
@@ -155,14 +151,12 @@ describe('SensorActionCreators', () => {
       return getSensorHistory.then(() => {
         const { actionType, payload } = dispatch.firstCall.args[0];
 
-        expect(actionType).to.equal(constants.SENSOR_HISTORY_VIEW);
-        expect(payload).to.deep.equal({ sensorHistory: expectedHistory.queryresult.matches[0] });
+        expect(actionType).to.equal(constants.CURRENT_SENSOR_HISTORY_VIEW);
+        expect(payload).to.deep.equal({ history: expectedHistory.queryresult.matches[0] });
       });
     });
 
     afterEach(() => {
-      // foo.reset();
-      // bar.reset();
       get.reset();
       dispatch.reset();
     });
