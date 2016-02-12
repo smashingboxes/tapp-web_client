@@ -15,5 +15,9 @@ npm install
 npm start
 ```
 
+## Testing
+
+To test, run `$ npm test`.
+
 ### Contributing
 https://medium.com/@zacharykuhn/a-gentle-intro-to-react-part-1-82ef6b16973c
