@@ -12,7 +12,14 @@ class SensorHistory extends Component {
   }
 
   componentWillMount() {
+    this.storeListener = SensorStore.addListener(() => {
+      this.setSensorHistory();
+    });
+    this.loadSensorHistory();
+  }
 
+  componentWillUnmount() {
+    this.storeListener.remove();
   }
 
   setSensorHistory() {
@@ -22,6 +29,16 @@ class SensorHistory extends Component {
 
   loadSensorHistory() {
     return SensorActionCreators.getSensorHistory();
+  }
+
+  render() {
+    return (
+      <div>
+        <p>FOO</p>
+        <p>{this.state.history}</p>
+        <p>{this.state.history.get('battery_level')}</p>
+      </div>
+    );
   }
 }
 

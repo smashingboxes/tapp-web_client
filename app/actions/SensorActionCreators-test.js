@@ -7,34 +7,32 @@ import constants from '../constants';
 import AppDispatcher from '../services/AppDispatcher';
 
 describe('SensorActionCreators', () => {
+  const brightWolfUrl = 'http://bw-c2230-002.bright-wolf.net';
   const expectedOrganizationCollection = {
-    organizations: [
-      {
-        id: faker.random.number(),
-        sensors_collection: {
-          sensors: [
-            {
-              sensor_id: faker.random.number()
-            }
-          ]
+    organizations_collection: {
+      organizations: [
+        {
+          id: faker.random.number(),
+          sensors_collection: {
+            sensors: [
+              {
+                sensor_id: faker.random.number()
+              }
+            ]
+          }
         }
-      }
-    ]
+      ]
+    }
   };
-  let sensorOrganization;
-  let sensor;
+  const sensorOrganization = expectedOrganizationCollection.organizations_collection.organizations[0];
+  const sensor = sensorOrganization.sensors_collection.sensors[0];
   let get;
-
-  before(() => {
-    sensorOrganization = expectedOrganizationCollection.organizations[0];
-    sensor = sensorOrganization.sensors_collection.sensors[0];
-  });
 
   describe('getSensorOrganization', () => {
     let getSensorOrganization;
 
     before(() => {
-      get = stub(axios, 'get', () => Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
+      get = stub(axios, 'get', () => Promise.resolve({ data: expectedOrganizationCollection }));
     });
 
     beforeEach(() => {
@@ -43,12 +41,12 @@ describe('SensorActionCreators', () => {
 
     it('requests the sensor organization from Bright Wolf', () => {
       const endPoint = get.firstCall.args[0];
-      expect(endPoint).to.equal(`/api/organizations`);
+      expect(endPoint).to.equal(`${brightWolfUrl}/api/organizations`);
     });
 
     it('returns the sensor organization', () => {
       return getSensorOrganization.then((data) => {
-        expect(data.sensor_organization).to.deep.equal(expectedOrganizationCollection.organizations[0]);
+        expect(data.sensor_organization).to.deep.equal(sensorOrganization);
       });
     });
 
@@ -66,8 +64,8 @@ describe('SensorActionCreators', () => {
 
     before(() => {
       get = stub(axios, 'get');
-      get.withArgs('/api/organizations').returns(Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
-      get.withArgs(`/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ sensors_collection: sensorOrganization.sensors_collection }));
+      get.withArgs(`${brightWolfUrl}/api/organizations`).returns(Promise.resolve({ data: expectedOrganizationCollection }));
+      get.withArgs(`${brightWolfUrl}/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ data: sensorOrganization }));
     });
 
     beforeEach(() => {
@@ -76,13 +74,13 @@ describe('SensorActionCreators', () => {
 
     it('first calls getSensorOrganization', () => {
       const endPoint = get.firstCall.args[0];
-      expect(endPoint).to.equal(`/api/organizations`);
+      expect(endPoint).to.equal(`${brightWolfUrl}/api/organizations`);
     });
 
     it('requests the sensor from Bright Wolf', () => {
       return getSensor.then(() => {
         const endPoint = get.secondCall.args[0];
-        expect(endPoint).to.equal(`/api/sensors?org_id=${sensorOrganization.id}`);
+        expect(endPoint).to.equal(`${brightWolfUrl}/api/sensors?org_id=${sensorOrganization.id}`);
       });
     });
 
@@ -120,9 +118,9 @@ describe('SensorActionCreators', () => {
       dispatch = stub(AppDispatcher, 'dispatch');
       get = stub(axios, 'get');
 
-      get.withArgs('/api/organizations').returns(Promise.resolve({ organizations_collection: expectedOrganizationCollection }));
-      get.withArgs(`/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ sensors_collection: sensorOrganization.sensors_collection }));
-      get.onCall(2).returns(Promise.resolve(expectedHistory));
+      get.withArgs(`${brightWolfUrl}/api/organizations`).returns(Promise.resolve({ data: expectedOrganizationCollection }));
+      get.withArgs(`${brightWolfUrl}/api/sensors?org_id=${sensorOrganization.id}`).returns(Promise.resolve({ data: sensorOrganization }));
+      get.onCall(2).returns(Promise.resolve({ data: expectedHistory }));
     });
 
     beforeEach(() => {
@@ -134,8 +132,8 @@ describe('SensorActionCreators', () => {
         const firstEndPoint = get.firstCall.args[0];
         const secondEndPoint = get.secondCall.args[0];
 
-        expect(firstEndPoint).to.equal(`/api/organizations`);
-        expect(secondEndPoint).to.equal(`/api/sensors?org_id=${sensorOrganization.id}`);
+        expect(firstEndPoint).to.equal(`${brightWolfUrl}/api/organizations`);
+        expect(secondEndPoint).to.equal(`${brightWolfUrl}/api/sensors?org_id=${sensorOrganization.id}`);
       });
     });
 
@@ -143,7 +141,7 @@ describe('SensorActionCreators', () => {
       return getSensorHistory.then(() => {
         const endpoint = get.thirdCall.args[0];
 
-        expect(endpoint).to.contain(`/api/sensors/history?sensor_id=${sensor.sensor_id}&from=`);
+        expect(endpoint).to.contain(`${brightWolfUrl}/api/sensors/history?sensor_id=${sensor.sensor_id}&from=`);
       });
     });
 

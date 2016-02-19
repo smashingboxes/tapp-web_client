@@ -2,9 +2,9 @@ import SensorActionCreators from '../actions/SensorActionCreators';
 import SensorHistory from './SensorHistory';
 import SensorStore from '../stores/SensorStore';
 import { Store } from 'flux/utils';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import faker from 'faker';
-import { stub } from 'sinon';
+import { stub, spy } from 'sinon';
 import { expect } from 'chai';
 
 describe('SensorHistory', () => {
@@ -13,9 +13,11 @@ describe('SensorHistory', () => {
   describe('componentWillMount', () => {
     const expectedListener = () => {};
     let addListener;
+    let loadSensorHistory;
 
     before(() => {
       addListener = stub(Store.prototype, 'addListener').returns(expectedListener);
+      loadSensorHistory = spy(SensorHistory.prototype, 'loadSensorHistory');
     });
 
     beforeEach(() => {
@@ -27,12 +29,44 @@ describe('SensorHistory', () => {
       expect(addListener.calledOnce).to.be.true;
     });
 
+    it('saves the listener to the component', () => {
+      expect(sensorHistory.storeListener).to.equal(expectedListener);
+    });
+
+    it('calls loadSensorHistory', () => {
+      expect(loadSensorHistory.calledOnce).to.be.true;
+    });
+
     afterEach(() => {
       addListener.reset();
+      loadSensorHistory.reset();
     });
 
     after(() => {
       addListener.restore();
+      loadSensorHistory.restore();
+    });
+  });
+
+  describe('componentWillUnmount', () => {
+    let remove;
+
+    before(() => {
+      remove = spy();
+    });
+
+    beforeEach(() => {
+      sensorHistory = new SensorHistory();
+      sensorHistory.storeListener = { remove };
+      sensorHistory.componentWillUnmount();
+    });
+
+    it('removes the storeListener', () => {
+      expect(remove.calledOnce).to.be.true;
+    });
+
+    afterEach(() => {
+      remove.reset();
     });
   });
 
@@ -75,8 +109,8 @@ describe('SensorHistory', () => {
 
     it('gets the sensor history from the sensor store', () => {
       expect(getCurrentSensorHistory.calledOnce).to.be.true;
-      const analog_channel_1 = getCurrentSensorHistory.firstCall.returnValue.analog_channel_1;
-      expect(analog_channel_1).to.equal(expectedHistory.analog_channel_1);
+      const analogChannel1 = getCurrentSensorHistory.firstCall.returnValue.analog_channel_1;
+      expect(analogChannel1).to.equal(expectedHistory.analog_channel_1);
     });
 
     it('sets the sensor history to the state', () => {

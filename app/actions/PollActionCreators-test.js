@@ -7,6 +7,8 @@ import constants from '../constants';
 import PollActionCreators from './PollActionCreators';
 
 describe('PollActionCreators', () => {
+  const hostUrl = 'http://localhost:3000/';
+
   describe('getCurrentPoll', () => {
     const poll = {
       data: {
@@ -46,7 +48,7 @@ describe('PollActionCreators', () => {
 
     it('requests a the current poll', () => {
       const endPoint = get.firstCall.args[0];
-      expect(endPoint).to.equal(`api/poll`);
+      expect(endPoint).to.equal(`${hostUrl}api/poll`);
     });
 
     it('dispatches the poll', () => {
