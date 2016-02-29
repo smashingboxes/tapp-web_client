@@ -2,12 +2,18 @@ import React, { cloneElement, Component, PropTypes } from 'react';
 import SensorActionCreators from '../actions/SensorActionCreators';
 import SensorStore from '../stores/SensorStore';
 import Immutable from 'immutable';
+import SensorGraph from './SensorGraph';
+import CustomPropTypes from '../utils/CustomPropTypes';
+
+const propTypes = {
+  params: PropTypes.object.isRequired
+};
 
 class SensorHistory extends Component {
   constructor() {
     super();
     this.state = {
-      history: new Immutable.Map()
+      sensorHistory: []
     };
   }
 
@@ -23,8 +29,8 @@ class SensorHistory extends Component {
   }
 
   setSensorHistory() {
-    const history = SensorStore.getCurrentSensorHistory();
-    this.setState({ history });
+    const sensorHistory = SensorStore.getCurrentSensorHistory();
+    this.setState({ sensorHistory });
   }
 
   loadSensorHistory() {
@@ -35,11 +41,17 @@ class SensorHistory extends Component {
     return (
       <div>
         <p>FOO</p>
-        <p>{this.state.history}</p>
-        <p>{this.state.history.get('battery_level')}</p>
+        <SensorGraph sensorHistory={this.state.sensorHistory} />
       </div>
     );
   }
+      // <div>
+      //   <p>FOO</p>
+      //   <p>{this.state.sensorHistory}</p>
+      //   <p>{this.state.sensorHistory.get('battery_level')}</p>
+      // </div>
 }
+
+SensorHistory.propTypes = propTypes;
 
 export default SensorHistory;

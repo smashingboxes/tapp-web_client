@@ -5,7 +5,7 @@ import { Store } from 'flux/utils';
 
 function getInitialSensorStore() {
   return new Immutable.Map({
-    history: new Immutable.Map()
+    sensorHistory: []
   });
 }
 
@@ -29,11 +29,11 @@ class SensorStore extends Store {
   }
 
   getCurrentSensorHistory() {
-    return sensorStore.get('history');
+    return sensorStore.get('sensorHistory');
   }
 
-  setCurrentSensorHistory({ history }) {
-    sensorStore = sensorStore.set('history', Immutable.fromJS(history));
+  setCurrentSensorHistory({ sensorHistory }) {
+    sensorStore = sensorStore.set('sensorHistory', sensorHistory);
   }
 
   resetSensorStore() {

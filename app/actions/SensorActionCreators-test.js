@@ -150,7 +150,7 @@ describe('SensorActionCreators', () => {
         const { actionType, payload } = dispatch.firstCall.args[0];
 
         expect(actionType).to.equal(constants.CURRENT_SENSOR_HISTORY_VIEW);
-        expect(payload).to.deep.equal({ history: expectedHistory.queryresult.matches[0] });
+        expect(payload).to.deep.equal({ sensorHistory: expectedHistory.queryresult.matches });
       });
     });
 

@@ -1,5 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Router, { Route } from 'react-router';
+import './index.scss';
 import './index.html';
 import { getHistory } from './services/HistoryService';
 import TappRoot from './components/TappRoot';
@@ -13,4 +15,4 @@ const routes = (
   </Router>
 );
 
-React.render(routes, document.getElementById('react-mount'));
+ReactDOM.render(routes, document.getElementById('react-mount'));

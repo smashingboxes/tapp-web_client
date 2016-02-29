@@ -90,10 +90,10 @@ describe('SensorHistory', () => {
   });
 
   describe('setSensorHistory', () => {
-    const expectedHistory = {
+    const expectedHistory = [{
       analog_channel_1: faker.random.number(),
       report_time: faker.date.past()
-    };
+    }];
     let getCurrentSensorHistory;
     let setState;
 
@@ -107,23 +107,25 @@ describe('SensorHistory', () => {
       sensorHistory.setSensorHistory();
     });
 
-    it('gets the sensor history from the sensor store', () => {
+    it('gets the sensor sensorHistory from the sensor store', () => {
       expect(getCurrentSensorHistory.calledOnce).to.be.true;
       const analogChannel1 = getCurrentSensorHistory.firstCall.returnValue.analog_channel_1;
       expect(analogChannel1).to.equal(expectedHistory.analog_channel_1);
     });
 
-    it('sets the sensor history to the state', () => {
-      const [{ history }] = setState.firstCall.args;
-      expect(history).to.equal(expectedHistory);
+    it('sets the sensor sensorHistory to the state', () => {
+      const [{ sensorHistory }] = setState.firstCall.args;
+      expect(sensorHistory).to.equal(expectedHistory);
     });
 
     afterEach(() => {
       getCurrentSensorHistory.reset();
+      setState.reset();
     });
 
     after(() => {
       getCurrentSensorHistory.restore();
+      setState.restore();
     });
   });
 });

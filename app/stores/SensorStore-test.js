@@ -21,22 +21,22 @@ describe('SensorStore', () => {
       expect(sensor).to.equal(new Immutable.Map());
     });
 
-    it('can set (and then get) the sensor history', () => {
-      SensorStore.setCurrentSensorHistory({ history: expectedHistory });
-      const history = SensorStore.getCurrentSensorHistory();
-      expect(history).to.equal(Immutable.fromJS(expectedHistory));
+    it('can set (and then get) the sensor sensorHistory', () => {
+      SensorStore.setCurrentSensorHistory({ sensorHistory: expectedHistory });
+      const sensorHistory = SensorStore.getCurrentSensorHistory();
+      expect(sensorHistory).to.equal(Immutable.fromJS(expectedHistory));
     });
   });
 
   describe('resetSensorStore', () => {
     beforeEach(() => {
-      SensorStore.setCurrentSensorHistory({ history: expectedHistory });
+      SensorStore.setCurrentSensorHistory({ sensorHistory: expectedHistory });
       SensorStore.resetSensorStore();
     });
 
     it('resets the sensor store', () => {
-      const history = SensorStore.getCurrentSensorHistory();
-      expect(history).to.equal(new Immutable.Map());
+      const sensorHistory = SensorStore.getCurrentSensorHistory();
+      expect(sensorHistory).to.equal(new Immutable.Map());
     });
   });
 });
