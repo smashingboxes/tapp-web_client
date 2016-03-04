@@ -1,14 +1,11 @@
 import { expect } from 'chai';
-// import faker from 'faker';
 import { stub } from 'sinon';
 import BeerOptions from './BeerOptions';
 import PollActionCreators from '../actions/PollActionCreators';
 
 describe('BeerOptions', () => {
   describe('setPollState', () => {
-    it('gets the poll data from the store', () => {
-
-    });
+    it('gets the poll data from the store');
   });
 
   describe('LoadPoll', () => {

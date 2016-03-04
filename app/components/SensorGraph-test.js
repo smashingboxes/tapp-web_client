@@ -56,7 +56,7 @@ describe('SensorGraph', () => {
     });
   });
 
-  describe('SensorGraph', () => {
+  describe('formatSensorHistory', () => {
     let sliceOffOldData;
     let addTimeObjects;
     let formatSensorHistory;

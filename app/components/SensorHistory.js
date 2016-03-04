@@ -38,7 +38,6 @@ class SensorHistory extends Component {
   render() {
     return (
       <div>
-        <p>FOO</p>
         <SensorGraph sensorHistory={this.state.sensorHistory} />
       </div>
     );

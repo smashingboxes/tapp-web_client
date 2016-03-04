@@ -28,7 +28,7 @@ function getSensor() {
 function getSensorHistory() {
   return getSensor()
     .then(({ sensor }) => {
-      return accessBrightWolf(`api/sensors/history?sensor_id=${sensor.sensor_id}&from=${moment().subtract('8', 'days').toISOString()}`)
+      return accessBrightWolf(`api/sensors/history?sensor_id=${sensor.sensor_id}&from=${moment().subtract('3', 'days').toISOString()}`)
         .then(({ data }) => {
           AppDispatcher.dispatch({
             actionType: constants.CURRENT_SENSOR_HISTORY_VIEW,

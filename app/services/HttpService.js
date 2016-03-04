@@ -1,9 +1,12 @@
 import axios from 'axios';
 import base64 from 'base-64';
+import DevKeysAndPasswords from '../../.DevKeysAndPasswords';
 
 class HttpService {
   accessBrightWolf(endpoint) {
-    const encodedHeader = 'Basic ' + base64.encode('brandon.mathis:sb2015');
+    const password = DevKeysAndPasswords.brightWolfPassword();
+    const header = `brandon.mathis:${password}`;
+    const encodedHeader = 'Basic ' + base64.encode(header);
     const brightWolfInstance = axios;
 
     brightWolfInstance.defaults.baseURL = 'http://bw-c2230-002.bright-wolf.net/';

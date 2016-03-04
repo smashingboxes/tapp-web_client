@@ -17,6 +17,7 @@ global.sessionStorage = {
 global.navigator = {
   userAgent: 'node.js'
 };
+
 global.document = jsdom.jsdom('<!doctype html><html><body><div id="chart"></div></body></html>');
 global.window = document.defaultView;
 global.MG = {version: '2.8.0'};

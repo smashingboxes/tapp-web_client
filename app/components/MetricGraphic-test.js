@@ -28,7 +28,6 @@ describe('MetricGraphic', () => {
       });
 
       expectedMetricGraph = MG.data_graphic({
-        // # title: "Pours"
         description: 'tapp pours',
         data: expectedData,
         width: 1000,
@@ -41,6 +40,7 @@ describe('MetricGraphic', () => {
 
     beforeEach(() => {
       const metricGraphic = new MetricGraphic();
+
       metricGraphic.props = {
         sensorHistory: expectedData
       };
