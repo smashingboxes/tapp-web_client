@@ -1,13 +1,14 @@
-import axios from 'axios';
 import AppDispatcher from '../services/AppDispatcher';
+import HttpService from '../services/HttpService';
 import constants from '../constants';
 
+const accessHost = new HttpService().accessHost;
+
 function getCurrentPoll() {
-  return axios
-    .get('api/poll')
+  return accessHost('api/poll')
     .then(({ data }) => {
       AppDispatcher.dispatch({
-        actionType: constants.CURRENT_POLL,
+        actionType: constants.CURRENT_POLL_VIEW,
         payload: { data }
       });
     });

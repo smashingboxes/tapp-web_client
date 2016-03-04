@@ -33,7 +33,7 @@ describe('PollActionCreators', () => {
     };
     let get;
     let dispatch;
-    let promise;
+    let getCurrentPoll;
 
     before(() => {
       dispatch = stub(AppDispatcher, 'dispatch');
@@ -41,20 +41,19 @@ describe('PollActionCreators', () => {
     });
 
     beforeEach(() => {
-      promise = PollActionCreators.getCurrentPoll();
-      // PollActionCreators.getCurrentPoll();
+      getCurrentPoll = PollActionCreators.getCurrentPoll();
     });
 
     it('requests a the current poll', () => {
       const endPoint = get.firstCall.args[0];
-      expect(endPoint).to.equal(`api/poll`);
+      expect(endPoint).to.equal('api/poll');
     });
 
     it('dispatches the poll', () => {
-      return promise.then(() => {
+      return getCurrentPoll.then(() => {
         const { actionType, payload } = dispatch.firstCall.args[0];
 
-        expect(actionType).to.equal(constants.CURRENT_POLL);
+        expect(actionType).to.equal(constants.CURRENT_POLL_VIEW);
         expect(payload).to.deep.equal(poll);
       });
     });

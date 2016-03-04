@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiImmutable from 'chai-immutable';
 import faker from 'faker';
+import jsdom from 'jsdom';
 
 chai.use(chaiImmutable);
 
@@ -12,6 +13,14 @@ global.sessionStorage = {
   setItem: function(key, value) { sessionStorageData[key] = value; },
   removeItem: function(key) { delete sessionStorageData[key]; }
 };
+
+global.navigator = {
+  userAgent: 'node.js'
+};
+
+global.document = jsdom.jsdom('<!doctype html><html><body><div id="chart"></div></body></html>');
+global.window = document.defaultView;
+global.MG = {version: '2.8.0'};
 
 global.location = {
   host: faker.internet.domainName(),

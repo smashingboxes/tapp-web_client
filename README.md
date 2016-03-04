@@ -15,5 +15,12 @@ npm install
 npm start
 ```
 
+#### Backend API
+The web client is listening for the API on port 3000
+
+## Testing
+
+To test, run `$ npm test`.
+
 ### Contributing
 https://medium.com/@zacharykuhn/a-gentle-intro-to-react-part-1-82ef6b16973c
