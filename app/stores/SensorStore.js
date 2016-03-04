@@ -14,10 +14,7 @@ let sensorStore = getInitialSensorStore();
 class SensorStore extends Store {
   __onDispatch(action) {
     if (this.actions[action.actionType]) {
-      // this.setPatients for example?
-      // What's this.setPatients.call... doing?
       this.actions[action.actionType].call(this, action.payload);
-      // purpose of this?
       this.__emitChange();
     }
   }

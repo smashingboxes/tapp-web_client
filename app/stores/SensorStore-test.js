@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import faker from 'faker';
 import SensorStore from './SensorStore';
-import Immutable from 'immutable';
 
 describe('SensorStore', () => {
   const expectedHistory = {
@@ -18,13 +17,13 @@ describe('SensorStore', () => {
   describe('getCurrentSensorHistory and setCurrentSensorHistory', () => {
     it('gets a blank sensor before any are added', () => {
       const sensor = SensorStore.getCurrentSensorHistory();
-      expect(sensor).to.equal(new Immutable.Map());
+      expect(sensor).to.deep.equal([]);
     });
 
     it('can set (and then get) the sensor sensorHistory', () => {
       SensorStore.setCurrentSensorHistory({ sensorHistory: expectedHistory });
       const sensorHistory = SensorStore.getCurrentSensorHistory();
-      expect(sensorHistory).to.equal(Immutable.fromJS(expectedHistory));
+      expect(sensorHistory).to.equal(expectedHistory);
     });
   });
 
@@ -36,7 +35,7 @@ describe('SensorStore', () => {
 
     it('resets the sensor store', () => {
       const sensorHistory = SensorStore.getCurrentSensorHistory();
-      expect(sensorHistory).to.equal(new Immutable.Map());
+      expect(sensorHistory).to.deep.equal([]);
     });
   });
 });

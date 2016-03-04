@@ -1,62 +1,37 @@
-import React, { cloneElement, Component, PropTypes } from 'react';
-import Immutable from 'immutable';
-import { _ } from 'underscore';
-import faker from 'faker';
+import React, { Component, PropTypes } from 'react';
 import './SensorGraph.scss';
-import MG from 'metrics-graphics';
+import MetricGraphic from './MetricGraphic';
 
 const propTypes = {
   sensorHistory: PropTypes.array
 };
 
 class SensorGraph extends Component {
-  componentWillMount() {
-    this.setSensorHistory();
-  }
-
-  setSensorHistory() {
-    this.setState({ sensorHistory: this.props.sensorHistory });
-  }
-
   sliceOffOldData(sensorHistory) {
-    return sensorHistory.slice(Math.max(sensorHistory.size - 100, 1));
+    return sensorHistory.slice(Math.max(sensorHistory.length - 100, 1));
   }
 
   addTimeObjects(sensorHistory) {
     sensorHistory.map((reading) => {
       reading.time_object = new Date(reading.report_time);
+      return reading;
     });
 
     return sensorHistory;
   }
 
-  foo(bar) {
-    bar.map((baz) => {
-      console.log(baz.time_object);
-      console.log(baz.analog_channel_1);
-    });
-  }
-
-  createDataGraphic() {
+  formatSensorHistory() {
     let sensorHistory = this.props.sensorHistory;
     sensorHistory = this.sliceOffOldData(sensorHistory);
     sensorHistory = this.addTimeObjects(sensorHistory);
 
-    return MG.data_graphic({
-      description: 'tapp pours',
-      data: sensorHistory,
-      width: 750,
-      height: 250,
-      target: '#chart',
-      x_accessor: 'time_object',
-      y_accessor: 'analog_channel_1'
-    });
+    return sensorHistory;
   }
 
   render() {
     return (
-      <div id='chart'>
-        {this.createDataGraphic()}
+      <div>
+        <MetricGraphic sensorHistory={this.formatSensorHistory()} />
       </div>
     );
   }

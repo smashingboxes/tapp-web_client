@@ -37,7 +37,6 @@ describe('HttpService', () => {
   });
 
   describe('accessHost', () => {
-    const hostUrl = 'http://localhost:3000/';
     const expectedEndpoint = 'bar';
     let httpService;
     let host;
@@ -55,9 +54,9 @@ describe('HttpService', () => {
       expect(host.calledOnce).to.be.true;
     });
 
-    it('returns localhost in the full url if in development', () => {
+    it('returns the endpoint in the get', () => {
       process.env.NODE_ENV = 'development';
-      expect(host.firstCall.args[0]).to.equal(`${hostUrl}${expectedEndpoint}`);
+      expect(host.firstCall.args[0]).to.equal(`${expectedEndpoint}`);
     });
 
     afterEach(() => {

@@ -114,8 +114,8 @@ describe('SensorHistory', () => {
     });
 
     it('sets the sensor sensorHistory to the state', () => {
-      const [{ sensorHistory }] = setState.firstCall.args;
-      expect(sensorHistory).to.equal(expectedHistory);
+      const expectedSensorHistory = setState.firstCall.args[0].sensorHistory;
+      expect(expectedSensorHistory).to.equal(expectedHistory);
     });
 
     afterEach(() => {

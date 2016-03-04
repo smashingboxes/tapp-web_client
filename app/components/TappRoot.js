@@ -1,4 +1,4 @@
-import React, { Component, cloneElement } from 'react';
+import React, { Component } from 'react';
 import CustomPropTypes from '../utils/CustomPropTypes';
 import SiteHeader from './SiteHeader';
 
@@ -19,7 +19,6 @@ class TappRoot extends Component {
       </div>
     );
   }
-        // {this.props.children && cloneElement(this.props.children)}
 }
 
 TappRoot.propTypes = propTypes;

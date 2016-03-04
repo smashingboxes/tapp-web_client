@@ -16,7 +16,7 @@ class HttpService {
     const hostUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '';
 
     return axios
-      .get(`${hostUrl}${endpoint}`);
+      .get(`${hostUrl + endpoint}`);
   }
 }
 
