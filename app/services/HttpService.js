@@ -1,6 +1,6 @@
 import axios from 'axios';
 import base64 from 'base-64';
-import DevKeysAndPasswords from '../../.DevKeysAndPasswords';
+import DevKeysAndPasswords from '../../.DevKeys';
 
 class HttpService {
   accessBrightWolf(endpoint) {

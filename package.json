@@ -5,7 +5,7 @@
   "main": "app/main.jsx",
   "scripts": {
     "build": "webpack -d",
-    "start": "webpack-dev-server --port 8081 -d",
+    "start": "webpack-dev-server --port 8083 -d",
     "test": "eslint ./app && mocha --opts mocha.opts 'app/**/*-test.js'"
   },
   "repository": {

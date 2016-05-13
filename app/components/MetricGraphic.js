@@ -10,7 +10,7 @@ class MetricGraphic extends Component {
     return MG.data_graphic({
       description: 'tapp pours',
       data: this.props.sensorHistory,
-      width: 1250,
+      width: 1000,
       height: 250,
       target: '#chart',
       x_accessor: 'time_object',
